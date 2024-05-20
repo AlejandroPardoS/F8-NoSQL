@@ -1,5 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,7 +14,7 @@ import lombok.ToString;
 public class Usuario {
     
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field("numeroDocumento")
     private String numeroDocumento;
@@ -45,7 +46,7 @@ public class Usuario {
     private String tipoPersona;
    
 
-    public Usuario(String id, String numeroDocumento, String tipoDocumento, String rol, String nombre, String login,
+    public Usuario(ObjectId id, String numeroDocumento, String tipoDocumento, String rol, String nombre, String login,
             String palabraClave, String nacionalidad, String direccion, String correoElectronico, String telefono,
             String ciudad, String departamento, String codigoPostal, String tipoPersona) {
         this.id = id;

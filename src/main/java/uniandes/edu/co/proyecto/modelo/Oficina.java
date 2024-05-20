@@ -1,5 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,7 +14,7 @@ import lombok.ToString;
 public class Oficina {
 
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field("nombre")
     private String nombre;
@@ -29,7 +30,7 @@ public class Oficina {
 
     //public Oficina() {;}
 
-    public Oficina(String id, String nombre, String direccion, Integer numeroPuntosAtencion,
+    public Oficina(ObjectId id, String nombre, String direccion, Integer numeroPuntosAtencion,
             String horarioDeAtencion) {
         this.id = id;
         this.nombre = nombre;

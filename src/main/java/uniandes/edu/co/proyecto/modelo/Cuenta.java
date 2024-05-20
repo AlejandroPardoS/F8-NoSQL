@@ -3,6 +3,7 @@ package uniandes.edu.co.proyecto.modelo;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,13 +18,13 @@ import lombok.ToString;
 public class Cuenta {
     
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field("numeroCuenta")
     private String numeroCuenta;
 
     @DBRef
-    private Usuario id_usuario;
+    private ObjectId id_usuario;
 
     @Field("tipoCuenta")
     private String tipoCuenta;
@@ -38,7 +39,7 @@ public class Cuenta {
 
     public Cuenta(){;}
 
-    public Cuenta(String id, String numeroCuenta, Usuario id_usuario, String tipoCuenta, String estadoCuenta, Double saldo,
+    public Cuenta(ObjectId id, String numeroCuenta, ObjectId id_usuario, String tipoCuenta, String estadoCuenta, Double saldo,
             Date fechaCreacion, List<OperacionBancariaCuenta> operacionesBancarias) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;

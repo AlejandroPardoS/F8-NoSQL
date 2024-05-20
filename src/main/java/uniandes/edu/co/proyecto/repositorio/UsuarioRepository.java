@@ -1,15 +1,16 @@
 package uniandes.edu.co.proyecto.repositorio;
 
-
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import uniandes.edu.co.proyecto.modelo.Cuenta;
+import uniandes.edu.co.proyecto.modelo.Usuario;
 
-public interface CuentaRepository extends MongoRepository<Cuenta, ObjectId> {
+public interface UsuarioRepository extends MongoRepository<Usuario, ObjectId> {
 
-     @Query("{numeroCuenta: ?0}")
-    Cuenta buscarPorNumeroCuenta(String numeroCuenta);
+    @Query("{'_id': ?0}")
+    Usuario buscarPorId(ObjectId id);
 
+    
 }

@@ -1,5 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +15,7 @@ import lombok.ToString;
 public class PuntoDeAtencion {
     
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field("latitud")
     private Double latitud;
@@ -26,9 +27,9 @@ public class PuntoDeAtencion {
     private String tipo;
 
     @DBRef
-    private Oficina idOficina;
+    private ObjectId idOficina;
 
-    public PuntoDeAtencion(String id, Double latitud, Double longitud, String tipo, Oficina idOficina) {
+    public PuntoDeAtencion(ObjectId id, Double latitud, Double longitud, String tipo, ObjectId idOficina) {
         this.id = id;
         this.latitud = latitud;
         this.longitud = longitud;
