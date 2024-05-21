@@ -26,7 +26,7 @@ public class PuntoDeAtencion {
     @Field("tipo")
     private String tipo;
 
-    @DBRef
+    //@DBRef
     private ObjectId idOficina;
 
     private Oficina oficina;

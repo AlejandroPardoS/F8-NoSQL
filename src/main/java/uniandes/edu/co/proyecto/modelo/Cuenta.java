@@ -23,7 +23,7 @@ public class Cuenta {
     @Field("numeroCuenta")
     private String numeroCuenta;
 
-    @DBRef
+    //@DBRef
     private ObjectId id_usuario;
 
     @Field("tipoCuenta")
