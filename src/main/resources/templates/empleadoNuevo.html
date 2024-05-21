@@ -113,7 +113,6 @@
                 <table class="table table-hover table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ID</th>
                             <th>Latitud</th>
                             <th>Longitud</th>
                             <th>Tipo</th>
@@ -123,7 +122,6 @@
                     </thead>
                     <th:block th:each="puntoDeAtencion:${puntoDeAtencion}">
                         <tr>
-                            <td th:text="${puntoDeAtencion.id}"></td>
                             <td th:text="${puntoDeAtencion.latitud}"></td>
                             <td th:text="${puntoDeAtencion.longitud}"></td>
                             <td th:text="${puntoDeAtencion.tipo}"></td>

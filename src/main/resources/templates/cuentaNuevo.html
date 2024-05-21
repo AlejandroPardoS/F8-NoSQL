@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container mx-auto w-75 mt-5">
+        <h1 class="text-center">Crear Cuenta</h1>
+        
+        <form th:action=@{/cuenta/new/save}  method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="tipoDocumento">Tipo de Documento Cliente</label>
+                <select class="form-control" id="tipoDocumento" name="tipoDocumento" required>
+                    <option value="Cedula">Cédula de Ciudadanía (CC)</option>
+                    <option value="Pasaporte">Pasaporte (PP)</option>
+                    <option value="Cedula extranjera">Cédula Extranjera (CE)</option>
+                    <option value="Tarjeta de Identidad">Tarjeta de Identidad (TI)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroDocumento">Número de Documento Cliente</label>
+                <input type="text" class="form-control" id="numeroDocumento" name="numeroDocumento" placeholder="Ingrese el numero de documento del cliente" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoCuenta">Tipo de Cuenta</label>
+                <select class="form-control" id="tipoCuenta" name="tipoCuenta" required>
+                    <option value="Ahorros">Ahorros</option>
+                    <option value="Corriente">Corriente</option>
+                    <option value="AFC">AFC</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="estadoCuenta">Estado de Cuenta</label>
+                <select class="form-control" id="estadoCuenta" name="estadoCuenta" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Cerrada">Cerrada</option>
+                    <option value="Desactivada">Desactivada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="saldo">Saldo</label>
+                <input type="number" class="form-control" id="saldo" name="saldo" placeholder="Ingrese el saldo" required>
+            </div>            
+            <div class="form-group">
+                <label for="fechaCreacion">Fecha Creacion (Auto)</label>
+                <input type="text" class="form-control" id="fechaCreacion" name="fechaCreacion" required readonly>
+            </div>
+            <div class="form-group" style="display: none;">
+                <input type="text" class="form-control" id="hora" name="hora" required readonly>
+            </div>           
+            <script>
+                function getTodayDateTime() {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+                    return yyyy + '-' + mm + '-' + dd;
+                }
+
+                function getTodayTimestamp() {
+                    return new Date().toISOString();
+                }
+
+                function getTodayTime() {
+                    var today = new Date();
+                    var hours = String(today.getHours()).padStart(2, '0');
+                    var minutes = String(today.getMinutes()).padStart(2, '0');
+                    var seconds = String(today.getSeconds()).padStart(2, '0');
+                    return hours + ':' + minutes + ':' + seconds;
+                }
+            
+                window.onload = function() {
+                    var timestamp = getTodayTimestamp();
+                    document.getElementById('fechaCreacion').value = timestamp;
+                    document.getElementById('hora').value = getTodayTime();
+
+                };
+            </script>
+
+            <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+            <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    
+</body>
+</html>

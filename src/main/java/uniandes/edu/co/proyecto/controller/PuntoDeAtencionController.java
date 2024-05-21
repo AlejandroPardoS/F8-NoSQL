@@ -69,6 +69,7 @@ public class PuntoDeAtencionController {
         puntoDeAtencion.setIdOficina(idOficinaObj);
         puntoDeAtencionRepository.save(puntoDeAtencion);
 
+        oficinaRepository.incrementarPuntosDeAtencion(idOficinaObj);
         Optional<Oficina> oficina = oficinaRepository.findById(idOficinaObj);
         puntoDeAtencion.setOficina(oficina.get());
         return "redirect:/puntoDeAtencion";
@@ -77,6 +78,7 @@ public class PuntoDeAtencionController {
 
     @GetMapping("/puntoDeAtencion/{id}/delete")
     public String puntoDeAtencionEliminar(@PathVariable("id") ObjectId id) {
+        oficinaRepository.disminuirPuntosDeAtencion(puntoDeAtencionRepository.findById(id).get().getIdOficina());
         puntoDeAtencionRepository.deleteById(id);
         return "redirect:/puntoDeAtencion";
     }

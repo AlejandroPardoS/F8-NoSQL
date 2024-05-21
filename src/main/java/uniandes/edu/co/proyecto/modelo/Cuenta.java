@@ -41,16 +41,13 @@ public class Cuenta {
 
     public Cuenta(){;}
 
-    public Cuenta(ObjectId id, String numeroCuenta, ObjectId id_usuario, String tipoCuenta, String estadoCuenta, Double saldo,
-            Date fechaCreacion, List<OperacionBancariaCuenta> operacionesBancarias) {
+    public Cuenta(ObjectId id, String numeroCuenta, String tipoCuenta, String estadoCuenta, Double saldo
+            ) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;
-        this.id_usuario = id_usuario;
         this.tipoCuenta = tipoCuenta;
         this.estadoCuenta = estadoCuenta;
         this.saldo = saldo;
-        this.fechaCreacion = fechaCreacion;
-        this.operacionesBancarias = operacionesBancarias;
     }
 
 }

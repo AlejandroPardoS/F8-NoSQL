@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Oficina</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container mx-auto w-75 mt-5">
+        <h1 class="text-center">Crear Oficina</h1>
+        
+        <form th:action=@{/oficina/new/save}  method="POST" class="mt-4">
+        
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la oficina" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la direccion" required>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroPuntosAtencion">Numero de Puntos de Atencion</label>
+                <input type="number" class="form-control" id="numeroPuntosAtencion" name="numeroPuntosAtencion" placeholder="Ingrese el numero de puntos de atencion" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="horarioDeAtencion">Horario De Atencion</label>
+                <input type="text" class="form-control" id="horarioDeAtencion" name="horarioDeAtencion" placeholder="Ingrese el horario de atencion" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear Oficina</button>
+            <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    
+</body>
+</html>

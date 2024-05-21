@@ -18,7 +18,6 @@
                     <th>Direccion</th>
                     <th>Numero de Puntos de Atencion</th>
                     <th>Horario de Atencion</th>
-                    <th>Elegir</th>
                 </tr>
             </thead>
             <th:block th:each="oficina:${oficina}">
@@ -28,9 +27,6 @@
                     <td th:text="${oficina.direccion}"></td>
                     <td th:text="${oficina.numeroPuntosAtencion}"></td>
                     <td th:text="${oficina.horarioDeAtencion}"></td>
-                    <td>
-                        <a th:href="@{/empleado/new/oficina/{id}(id=${oficina.id})}" class="btn btn-primary"> Elegir Oficina</a>
-                    </td>
                 </tr>
             </th:block>
         </table>

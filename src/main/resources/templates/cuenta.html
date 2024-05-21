@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <h1>Lista de cuentas</h1>
+
+        <!--<form th:action="@{/cuenta/filtrarCuentasPorTipo}" method="get">
+            <label for="tipoCuenta">Seleccionar Tipo de Cuenta a filtrar:</label>
+            <select name="tipoCuenta" id="tipoCuenta">
+                <option value="Todos">Todos</option>
+                <option value="Ahorros">Ahorros</option>
+                <option value="Corriente">Corriente</option>
+                <option value="AFC">AFC</option>
+            </select>
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <form th:action="@{/cuenta/filtrarCuentasPorSaldo}" method="get">
+            <label for="minSaldo">Saldo Mínimo:</label>
+            <input type="number" name="minSaldo" id="minSaldo">
+            <label for="maxSaldo">Saldo Máximo:</label>
+            <input type="number" name="maxSaldo" id="maxSaldo">
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <form th:action="@{/cuenta/filtrarCuentasPorFechaCreacion}" method="get">
+            <label for="fechaInicio">Fecha de Creacion de Inicio:</label>
+            <input type="date" name="fechaInicio" id="fechaInicio">
+            <label for="fechaFin">Fecha de Creacion de Fin:</label>
+            <input type="date" name="fechaFin" id="fechaFin">
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <form th:action="@{/cuenta/filtrarCuentasPorFechaUltTrans}" method="get">
+            <label for="fechaInicio">Fecha de Ultima Transaccion de Inicio:</label>
+            <input type="date" name="fechaInicio" id="fechaInicio">
+            <label for="fechaFin">Fecha de Ultima Transaccion de Fin:</label>
+            <input type="date" name="fechaFin" id="fechaFin">
+            <button type="submit">Filtrar</button>
+        </form>
+        
+        <form th:action="@{/cuenta/filtrarCuentasPorNumDocCliente}" method="get">
+            <label for="numeroDocumento">Numero de Documento del cliente:</label>
+            <input type="text" name="numeroDocumento" id="numeroDocumento">
+            <button type="submit">Filtrar</button>
+        </form>-->
+        
+
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Numero de Cuenta</th>
+                    <th>Tipo Documento Cliente</th>
+                    <th>Numero Documento Cliente</th>
+                    <th>Nombre Cliente</th>
+                    <th>Tipo de Cuenta</th>
+                    <th>Estado de Cuenta</th>
+                    <th>Saldo</th>
+                    <th>Fecha de Creacion</th>
+                    <th>Operaciones</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <th:block th:each="cuenta:${cuenta}" >
+                <tr>
+                    <td th:text="${cuenta.id}"></td>
+                    <td th:text="${cuenta.numeroCuenta}"></td>
+                    <td th:text="${cuenta.usuario.tipoDocumento}"></td>
+                    <td th:text="${cuenta.usuario.numeroDocumento}"></td>
+                    <td th:text="${cuenta.usuario.nombre}"></td>
+                    <td th:text="${cuenta.tipoCuenta}"></td>
+                    <td th:text="${cuenta.estadoCuenta}"></td>
+                    <td th:text="${cuenta.saldo}"></td>
+                    <td th:text="${cuenta.fechaCreacion}"></td>
+                    <td>
+                        <a>
+                            Ver Operaciones
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/cuenta/{numeroCuenta}/edit(numeroCuenta=${cuenta.numeroCuenta})}">
+                            Editar
+                        </a>
+                        <a>
+                            Consignar
+                        </a>
+                        <a>
+                            Retirar
+                        </a>
+                        <a>
+                            Transferir
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <div>
+            <a th:href="@{/}" class="btn btn-primary"> Volver Atrás</a>
+        </div>
+    </div>
+</body>
+</html>
