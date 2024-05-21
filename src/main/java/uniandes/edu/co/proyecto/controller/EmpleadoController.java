@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import uniandes.edu.co.proyecto.modelo.Empleado;
@@ -21,8 +20,6 @@ import uniandes.edu.co.proyecto.repositorio.EmpleadoRepository;
 import uniandes.edu.co.proyecto.repositorio.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorio.PuntoDeAtencionRepository;
 import uniandes.edu.co.proyecto.repositorio.UsuarioRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -48,20 +45,10 @@ public class EmpleadoController {
         return "empleado";
     }
 
+
     @GetMapping("/empleado/new")
     public String empleadoForm(Model model) {
         model.addAttribute("empleado", new Empleado());
-        return "empleadoNuevo";
-    }
-    
-    Usuario usuarioEmpleadoActual;
-    String rolEmpleadoActual;
-
-    @PostMapping("/empleado/new/save")
-    public String empleadoSinOficinaNiPtoAtencion(Model model, @ModelAttribute Usuario usuario, @ModelAttribute("rolEmpleado") String rolEmpleado) {
-        usuarioRepository.save(usuario);
-        usuarioEmpleadoActual = usuario;
-        rolEmpleadoActual = rolEmpleado;
         List<PuntoDeAtencion> puntosDeAtencion = puntoDeAtencionRepository.findAll();
         List<PuntoDeAtencion> puntosConOficina = new ArrayList<>();
         for (PuntoDeAtencion puntoDeAtencion : puntosDeAtencion) {
@@ -75,14 +62,20 @@ public class EmpleadoController {
             }        
         }
         model.addAttribute("puntoDeAtencion", puntosConOficina);
-        return "empleadoNuevoOficinaPtoAtencion";
+        return "empleadoNuevo";
     }
     
 
-    @GetMapping("/empleado/new/save/{id_oficina}/{id_punto_de_atencion}")
-    public String empleadoGuardar(Model model, @PathVariable("id_oficina") ObjectId id_oficina, 
-        @PathVariable("id_punto_de_atencion") ObjectId id_punto_de_atencion) {
-        
+    @PostMapping("/empleado/new/save")
+    public String empleadoSinOficinaNiPtoAtencion(Model model, @ModelAttribute Usuario usuario, 
+            @RequestParam("rolEmpleado") String rolEmpleado, @RequestParam("id_oficina") String id_oficinaStr,
+            @RequestParam("id_punto_de_atencion") String id_punto_de_atencionStr) {
+
+        usuarioRepository.save(usuario);
+
+        ObjectId id_oficina = new ObjectId(id_oficinaStr);
+        ObjectId id_punto_de_atencion = new ObjectId(id_punto_de_atencionStr);
+
         Optional<Oficina> oficina = oficinaRepository.findById(id_oficina);
         if (oficina.isEmpty()) {
             return "redirect:/";
@@ -93,8 +86,8 @@ public class EmpleadoController {
         }
 
         Empleado empleado = new Empleado();
-        empleado.setId_usuario(usuarioEmpleadoActual.getId());
-        empleado.setRolEmpleado(rolEmpleadoActual);
+        empleado.setId_usuario(usuario.getId());
+        empleado.setRolEmpleado(rolEmpleado);
         empleado.setId_oficina(id_oficina);
         empleado.setId_punto_de_atencion(id_punto_de_atencion);
 
@@ -103,7 +96,7 @@ public class EmpleadoController {
         model.addAttribute("empleado", empleados);
         return "empleado";
     }
-    
+
 
     public List<Empleado> obtenerEmpleadosAsociadosAOficinaYPtoAtencion() {
 

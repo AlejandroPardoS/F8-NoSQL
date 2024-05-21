@@ -103,15 +103,53 @@
                     </select> 
             </div>
 
-            <!--<div class="form-group">
-                <label for="id_oficina">ID de Oficina</label>
-                <input type="text" class="form-control" id="id_oficina" name="id_oficina" placeholder="Ingrese el ID de la oficina" required>
-            </div>
+            <input type="hidden" id="id_oficina" name="id_oficina" required>
+        
+            <input type="hidden" id="id_punto_de_atencion" name="id_punto_de_atencion" required>
+
             <div class="form-group">
-                <label for="id_punto_de_atencion">Seleccionar Punto de Atención</label>
-                <a href="#" th:href="@{/puntoDeAtencionElegir}" class="btn btn-primary">Elegir Punto de Atención</a>
-                <input type="text" class="form-control" id="id_punto_de_atencion" name="id_punto_de_atencion" placeholder="Ingrese el ID del punto de atención" required>
-            </div>-->
+                <!--<label for="id_oficina"></label>-->
+                <h5>Eliga el punto de atencion asociado al empleado</h5>
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Latitud</th>
+                            <th>Longitud</th>
+                            <th>Tipo</th>
+                            <th>Nombre Oficina</th>
+                            <th>Selección</th>
+                        </tr>
+                    </thead>
+                    <th:block th:each="puntoDeAtencion:${puntoDeAtencion}">
+                        <tr>
+                            <td th:text="${puntoDeAtencion.id}"></td>
+                            <td th:text="${puntoDeAtencion.latitud}"></td>
+                            <td th:text="${puntoDeAtencion.longitud}"></td>
+                            <td th:text="${puntoDeAtencion.tipo}"></td>
+                            <td>
+                                <span th:if="${puntoDeAtencion.oficina != null}" th:text="${puntoDeAtencion.oficina.nombre}"></span>
+                                <span th:if="${puntoDeAtencion.oficina == null}">No hay oficina asociada</span>
+                            </td>
+                            <td> 
+                                <button type="button" class="btn btn-primary" th:data-idPunto="${puntoDeAtencion.id}" th:data-idOficina="${puntoDeAtencion.oficina.id}">Elegir</button>
+                            </td>
+                        </tr>
+                    </th:block>
+                </table>
+            </div>
+
+            <script>
+                document.querySelectorAll('.btn-primary').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var puntoId = this.getAttribute('data-idPunto');
+                        document.getElementById('id_punto_de_atencion').value = puntoId;
+                        var oficinaId = this.getAttribute('data-idOficina');
+                        document.getElementById('id_oficina').value = oficinaId;
+                    });
+                });
+            </script>
+            
             
             <button type="submit" class="btn btn-primary">Crear Empleado</button>
             <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
