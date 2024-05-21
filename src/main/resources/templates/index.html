@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BancAndes</title>
+    <!-- Enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mx-auto w-75 mt-5">
+        <h1 class="text-center">BancAndes</h1>
+        <img src="https://media.licdn.com/dms/image/C4E1BAQG_j4_1iuvjsg/company-background_10000/0/1648818638643/caja_los_andes___banco_rural_lder_del_per_cover?e=2147483647&v=beta&t=qkFBoPN1LcZsa3__f2z2mIFK6IMkPsCfIoRYV6xUr_I" alt="Logo BancAndes" class="img-fluid d-block mx-auto my-4" style="max-width: 450px;">
+
+        <!-- Formulario de inicio de sesión -->
+        <form th:action=@{/iniciar} method="get" class="mt-4">
+            <div class="form-group">
+                <label for="tipo_documento">Tipo de Documento</label>
+                <select class="form-control" id="tipo_documento" name="tipo_documento" required>
+                    <option value="Cedula">Cédula de Ciudadanía (CC)</option>
+                    <option value="Pasaporte">Pasaporte (PP)</option>
+                    <option value="Cedula extranjera">Cédula Extranjera (CE)</option>
+                    <option value="Tarjeta de Identidad">Tarjeta de Identidad (TI)</option>
+                </select>
+            </div>   
+            <div class="form-group">
+                <label for="numero_documento">Documento</label>
+                <input type="text" class="form-control" id="numero_documento" name="numero_documento" placeholder="Ingrese su número de documento" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert" style="font-size: 1.2em;">
+                <label th:text="${errorMessage}"></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            
+            
+            <div class="btn-container">
+                <a th:href="@{usuario/new}" class="btn btn-primary btn-custom">Crear Cliente</a>
+            </div>
+            <div class="btn-container">
+                <a th:href="@{/usuario}" class="btn btn-primary btn-custom">Ver Usuarios</a>
+            </div>
+            <div class="btn-container">
+                <a th:href="@{empleado/new}" class="btn btn-primary btn-custom">Crear Empleado</a>
+            </div>
+            <div class="btn-container">
+                <a th:href="@{/empleado}" class="btn btn-primary btn-custom">Ver Empleados</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+ 

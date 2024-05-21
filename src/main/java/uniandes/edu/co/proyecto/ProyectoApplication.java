@@ -1,31 +1,17 @@
 package uniandes.edu.co.proyecto;
 
-
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import uniandes.edu.co.proyecto.modelo.Cuenta;
-import uniandes.edu.co.proyecto.modelo.Usuario;
-import uniandes.edu.co.proyecto.repositorio.CuentaRepository;
-import uniandes.edu.co.proyecto.repositorio.UsuarioRepository;
 
 @SpringBootApplication
-public class ProyectoApplication implements CommandLineRunner{
-
-	@Autowired
-	private CuentaRepository cuentaRepository;
-
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+public class ProyectoApplication {//implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProyectoApplication.class, args);
 	}
 
-	@Override
+	/*@Override
 	public void run(String... strings) throws Exception{
 
 		//QUERIES
@@ -39,6 +25,27 @@ public class ProyectoApplication implements CommandLineRunner{
 		System.out.println(res2);
 		System.out.println("\n NACIONALIDAD DEL CLIENTE:");
 		System.out.println(res2.getNacionalidad());
-	}
+
+		Usuario usuario = new Usuario();
+		usuario.setNumeroDocumento("1019902628");
+        usuario.setTipoDocumento("Cedula");
+        usuario.setRol("Cliente");
+        usuario.setNombre("Alejo");
+        usuario.setLogin("alejopardo");
+        usuario.setPalabraClave("alejopardo");
+        usuario.setNacionalidad("Colombiana");
+        usuario.setDireccion("Calle 116");
+        usuario.setCorreoElectronico("apardo@gmail.com");
+        usuario.setTelefono("3134849896");
+        usuario.setCiudad("Bogota");
+        usuario.setDepartamento("Cundinamarca");
+        usuario.setCodigoPostal("111111");
+        usuario.setTipoPersona("Natural");
+		usuarioRepository.save(usuario);
+
+		System.out.println("\n USUARIO INSERTADO: \n");
+		Usuario nuevoUsuario = usuarioRepository.buscarPorId(usuario.getId());
+		System.out.println(nuevoUsuario);
+	}*/
 
 }

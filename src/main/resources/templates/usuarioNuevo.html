@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container mx-auto w-75 mt-5">
+        <h1 class="text-center">Crear Usuario</h1>
+        
+        <form th:action=@{/usuario/new/save}  method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="tipoDocumento">Tipo de Documento</label>
+                <select class="form-control" id="tipoDocumento" name="tipoDocumento" required>
+                    <option value="Cedula">Cédula de Ciudadanía (CC)</option>
+                    <option value="Pasaporte">Pasaporte (PP)</option>
+                    <option value="Cedula extranjera">Cédula Extranjera (CE)</option>
+                    <option value="Tarjeta de Identidad">Tarjeta de Identidad (TI)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroDocumento">Número de Documento</label>
+                <input type="text" class="form-control" id="numeroDocumento" name="numeroDocumento" placeholder="Ingrese el número de documento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rol">Rol</label>
+                <select type="text" class="form-control" id="rol" name="rol" placeholder="Ingrese el rol" required>
+                <option value="Cliente">Cliente</option>
+                <option value="Empleado">Empleado</option>
+                <option value="Administrador">Administrador</option>
+                </select> 
+            </div>
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" class="form-control" id="login" name="login" placeholder="Ingrese el login" required>
+            </div>
+
+            <div class="form-group">
+                <label for="palabraClave">Palabra Clave</label>
+                <input type="password" class="form-control" id="palabraClave" name="palabraClave" placeholder="Ingrese la palabra clave" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nacionalidad">Nacionalidad</label>
+                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" placeholder="Ingrese la nacionalidad" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la dirección" required>
+            </div>
+
+            <div class="form-group">
+                <label for="correoElectronico">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" placeholder="Ingrese el correo electrónico" required>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Ingrese el teléfono" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ingrese la ciudad" required>
+            </div>
+
+            <div class="form-group">
+                <label for="departamento">Departamento</label>
+                <input type="text" class="form-control" id="departamento" name="departamento" placeholder="Ingrese el departamento" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="codigoPostal">Código Postal</label>
+                <input type="text" class="form-control" id="codigoPostal" name="codigoPostal" placeholder="Ingrese el código postal" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoPersona">Tipo de Persona</label>
+                <select type="text" class="form-control" id="tipoPersona" name="tipoPersona" required>
+                    <option value="Natural">Natural</option>
+                    <option value="Juridica">Juridica</option>
+                    </select> 
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear Usuario</button>
+            <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    
+</body>
+</html>

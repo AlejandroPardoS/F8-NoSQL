@@ -65,6 +65,6 @@ public class Usuario {
         this.codigoPostal = codigoPostal;
         this.tipoPersona = tipoPersona;
     }
-    //public Usuario(){}
+    public Usuario(){}
     
 }

@@ -37,6 +37,8 @@ public class Cuenta {
 
     private List<OperacionBancariaCuenta> operacionesBancarias;
 
+    private Usuario usuario;
+
     public Cuenta(){;}
 
     public Cuenta(ObjectId id, String numeroCuenta, ObjectId id_usuario, String tipoCuenta, String estadoCuenta, Double saldo,

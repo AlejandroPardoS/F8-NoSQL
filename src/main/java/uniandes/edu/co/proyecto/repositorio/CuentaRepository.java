@@ -9,7 +9,7 @@ import uniandes.edu.co.proyecto.modelo.Cuenta;
 
 public interface CuentaRepository extends MongoRepository<Cuenta, ObjectId> {
 
-     @Query("{numeroCuenta: ?0}")
+    @Query("{numeroCuenta: ?0}")
     Cuenta buscarPorNumeroCuenta(String numeroCuenta);
 
 }

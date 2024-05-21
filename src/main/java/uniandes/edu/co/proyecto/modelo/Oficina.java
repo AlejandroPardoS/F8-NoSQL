@@ -28,7 +28,7 @@ public class Oficina {
     @Field("horarioDeAtencion")
     private String horarioDeAtencion;
 
-    //public Oficina() {;}
+    public Oficina() {;}
 
     public Oficina(ObjectId id, String nombre, String direccion, Integer numeroPuntosAtencion,
             String horarioDeAtencion) {

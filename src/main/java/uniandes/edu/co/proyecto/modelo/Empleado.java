@@ -17,19 +17,23 @@ public class Empleado {
     @Id
     private ObjectId id;
 
-    @DBRef
+    //@DBRef
     private ObjectId id_usuario;
 
     @Field("rolEmpleado")
     private String rolEmpleado;
 
-    @DBRef
+    //@DBRef
     private ObjectId id_oficina;
 
-    @DBRef
+    //@DBRef
     private ObjectId id_punto_de_atencion;
 
-    //public Empleado(){;}
+    private Usuario usuario;
+    private Oficina oficina;
+    private PuntoDeAtencion puntoDeAtencion;
+
+    public Empleado(){;}
 
     public Empleado(ObjectId id, ObjectId id_usuario, String rolEmpleado, ObjectId id_oficina,
     ObjectId id_punto_de_atencion) {

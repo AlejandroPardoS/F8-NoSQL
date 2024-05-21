@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .btn-container {
+            margin-top: 30px;
+        }
+        .btn-custom {
+            margin: 10px;
+            width: calc(100% - 20px); /* Calcula el ancho de los botones */
+            max-width: 300px; /* Ancho máximo de los botones */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hola <span th:text="${cliente.id_usuario.nombre}"></span>! Bienvenido a BancAndes</h1>
+        <div class="btn-container">
+            <a th:href="@{cuenta/{id_cliente}(id_cliente=${cliente.id})}" class="btn btn-primary btn-custom">
+                Ver mis Cuentas y hacer Operaciones
+            </a>
+        </div>
+        <div class="btn-container">
+            <a th:href="@{prestamo/{id_cliente}(id_cliente=${cliente.id})}" class="btn btn-primary btn-custom">
+                Ver mis Préstamos y hacer Operaciones
+            </a>
+        </div>
+        <div class="btn-container">
+            <a th:href="@{/operacionBancariaCuenta/extractoBancario/sol}" class="btn btn-primary btn-custom">
+                Crear Extracto Bancario
+            </a>
+        </div>
+        <div class="btn-container">
+            <a th:href="@{usuario/{id_usuario}(id_usuario=${cliente.id_usuario.id})}" class="btn btn-primary btn-custom">
+                Ver y Actualizar mis Datos
+            </a>
+        </div>
+        <div class="btn-container">
+            <a th:href="@{/}" class="btn btn-primary btn-custom">Volver Atrás</a>
+        </div>
+    </div>
+</body>
+</html>

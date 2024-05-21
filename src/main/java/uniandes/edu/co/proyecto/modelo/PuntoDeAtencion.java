@@ -29,6 +29,8 @@ public class PuntoDeAtencion {
     @DBRef
     private ObjectId idOficina;
 
+    private Oficina oficina;
+
     public PuntoDeAtencion(ObjectId id, Double latitud, Double longitud, String tipo, ObjectId idOficina) {
         this.id = id;
         this.latitud = latitud;
@@ -37,6 +39,6 @@ public class PuntoDeAtencion {
         this.idOficina = idOficina;
     }
 
-    //public PuntoDeAtencion(){;}    
+    public PuntoDeAtencion(){;}    
     
 }

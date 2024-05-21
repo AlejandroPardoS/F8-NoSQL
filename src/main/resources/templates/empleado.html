@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleado</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <h1>Lista de empleados</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo de Documento</th>
+                    <th>Numero de Documento</th>
+                    <th>Nombre Empleado</th>
+                    <th>ROL</th>
+                    <th>OFICINA</th>
+                    <th>ID PUNTO DE ATENCIÓN</th>
+                    <th>TIPO PUNTO DE ATENCIÓN</th>
+
+                </tr>
+            </thead>
+            <th:block th:each="empleado:${empleado}">
+                <tr>
+                    <td th:text="${empleado.id}"></td>
+                    <td th:text="${empleado.usuario.tipoDocumento}"></td>
+                    <td th:text="${empleado.usuario.numeroDocumento}"></td>
+                    <td th:text="${empleado.usuario.nombre}"></td>
+                    <td th:text="${empleado.rolEmpleado}"></td>
+                    <td th:if="${empleado.oficina != null}" th:text="${empleado.oficina.nombre}"></td>
+                    <td th:if="${empleado.oficina == null}">Sin oficina</td>
+
+                    <td th:if="${empleado.puntoDeAtencion != null}" th:text="${empleado.puntoDeAtencion.id}"></td>
+                    <td th:if="${empleado.puntoDeAtencion == null}">Sin Punto de Atención</td>
+                    <td th:if="${empleado.puntoDeAtencion != null}" th:text="${empleado.puntoDeAtencion.tipo}"></td>
+                    <td th:if="${empleado.puntoDeAtencion == null}">Sin Punto de Atención</td>
+                </tr>
+            </th:block>
+        </table>
+        <div>
+            <a th:href="@{/}" class="btn btn-primary"> Volver Atrás</a>
+        </div>
+    </div>
+</body>
+</html>
