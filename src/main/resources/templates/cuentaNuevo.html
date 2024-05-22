@@ -57,13 +57,13 @@
                 <input type="text" class="form-control" id="hora" name="hora" required readonly>
             </div>           
             <script>
-                function getTodayDateTime() {
+                /*function getTodayDateTime() {
                     var today = new Date();
                     var dd = String(today.getDate()).padStart(2, '0');
                     var mm = String(today.getMonth() + 1).padStart(2, '0');
                     var yyyy = today.getFullYear();
                     return yyyy + '-' + mm + '-' + dd;
-                }
+                }*/
 
                 function getTodayTimestamp() {
                     return new Date().toISOString();

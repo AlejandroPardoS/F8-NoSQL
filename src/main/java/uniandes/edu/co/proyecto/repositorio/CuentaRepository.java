@@ -24,4 +24,8 @@ public interface CuentaRepository extends MongoRepository<Cuenta, ObjectId> {
     @Update("{$set:{'tipoCuenta': ?1}}")
     void actualizarTipoCuenta(ObjectId idCuenta, String tipoCuenta);
 
+    @Query("{_id: ?0}")
+    @Update("{$set:{'saldo': ?1}}")
+    void actualizarSaldo(ObjectId idCuenta, Double saldo);
+
 }

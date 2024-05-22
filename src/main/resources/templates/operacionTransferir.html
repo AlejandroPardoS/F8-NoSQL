@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferir Dinero a Cuenta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container mx-auto w-75 mt-5">
+        <h1 class="text-center">Transferir Dinero a Cuenta</h1>
+        
+        <form th:action="@{'/cuenta/operaciones/transferir/'+${numeroCuenta}+'/save'}" th:object="${cuenta}" method="POST" class="mt-4">
+
+            <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="text" class="form-control" id="fecha" name="fecha" required readonly>
+            </div>
+
+            <div class="form-group" style="display: none;">
+                <label for="hora">Hora</label>
+                <input type="text" class="form-control" id="hora" name="hora" required readonly>
+            </div>
+
+            <script>
+                /*function getTodayDateTime() {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+                    return yyyy + '-' + mm + '-' + dd;
+                }*/
+                function getTodayTimestamp() {
+                    return new Date().toISOString();
+                }
+
+                function getTodayTime() {
+                    var today = new Date();
+                    var hours = String(today.getHours()).padStart(2, '0');
+                    var minutes = String(today.getMinutes()).padStart(2, '0');
+                    var seconds = String(today.getSeconds()).padStart(2, '0');
+                    return hours + ':' + minutes + ':' + seconds;
+                }
+            
+                window.onload = function() {
+                    document.getElementById('fecha').value = getTodayTimestamp();
+                    document.getElementById('hora').value = getTodayTime();
+                };
+            </script>
+            
+            <div class="form-group">
+                <label for="tipoOperacion">Tipo Operacion</label>
+                <input type="text" class="form-control" id="tipoOperacion" name="tipoOperacion" value="Transferir" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="valor">Valor a transferir</label>
+                <input type="number" class="form-control" id="valor" name="valor" placeholder="Ingrese el valor a transferir" required>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroCuentaDestino">Numero Cuenta Destino</label>
+                <input type="text" class="form-control" id="numeroCuentaDestino" name="numeroCuentaDestino" placeholder="Ingrese el numero de cuenta a transferir" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Transferir</button>
+            <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    
+</body>
+</html>

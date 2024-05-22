@@ -2,10 +2,11 @@ package uniandes.edu.co.proyecto.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.OperacionBancariaCuenta;
@@ -73,15 +73,15 @@ public class CuentaController {
     public String cuentaGuardar(@ModelAttribute("numeroDocumento") String numeroDocumento, 
         @ModelAttribute("tipoDocumento") String tipoDocumento, @ModelAttribute("tipoCuenta") String tipoCuenta,
         @ModelAttribute("estadoCuenta") String estadoCuenta, @ModelAttribute("saldo") Double saldo, 
-        @ModelAttribute("fechaCreacion") String fechaCreacion, @ModelAttribute("hora") String hora) throws ParseException {
+        @ModelAttribute("fechaCreacion") String fechaCreacion, @ModelAttribute("hora") String hora, Model model) throws ParseException {
 
         Usuario usuario = usuarioRepository.buscarPorNumDoc(numeroDocumento);
         if (usuario != null) {
             Cuenta cuenta = new Cuenta();
             cuenta.setId_usuario(usuario.getId());
-            cuenta.setNumeroCuenta("1234567990"); //GENERAR UNA SECUENCIA DE NUMERO DE CUENTA QUE NO SE REPITA
+            //GENERAR UNA SECUENCIA DE NUMERO DE CUENTA
             //CON RANDOM DE 1 A 100000000000
-            
+            cuenta.setNumeroCuenta(generarNumeroCuenta());
             cuenta.setTipoCuenta(tipoCuenta);
             cuenta.setEstadoCuenta(estadoCuenta);
             cuenta.setSaldo(saldo);
@@ -93,6 +93,7 @@ public class CuentaController {
             cuenta.setOperacionesBancarias(List.of(opCreacion));
             cuentaRepository.save(cuenta);
         } else {
+            model.addAttribute("errorMessage", "Usuario no encontrado");
             return "error";
         }
         
@@ -112,148 +113,140 @@ public class CuentaController {
 
     @PostMapping("/cuenta/{numeroCuenta}/edit/save")
     public String cuentaEditarGuardar(@PathVariable("numeroCuenta") String numeroCuenta, @ModelAttribute Cuenta cuenta, Model model) {
-
-        //Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        Cuenta cuenta2 = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        ObjectId idCuenta = cuenta2.getId();
         if (cuenta.getEstadoCuenta().equals("Cerrada")){
             if (cuenta.getSaldo() == 0){
-                cuentaRepository.actualizarEstadoCuenta(cuenta.getId(), cuenta.getEstadoCuenta());
-                cuentaRepository.actualizarTipoCuenta(cuenta.getId(), cuenta.getTipoCuenta());
+                cuentaRepository.actualizarEstadoCuenta(idCuenta, cuenta.getEstadoCuenta());
+                cuentaRepository.actualizarTipoCuenta(idCuenta, cuenta.getTipoCuenta());
                 return "redirect:/";
             } else
                 model.addAttribute("errorMessage", "Cuenta no puede ser cerrada con saldo diferente de 0");
                 return "error";
         } else {
-            cuentaRepository.actualizarEstadoCuenta(cuenta.getId(), cuenta.getEstadoCuenta()); //NO ESTÁ FUNCIONANDO
-            cuentaRepository.actualizarTipoCuenta(cuenta.getId(), cuenta.getTipoCuenta()); //NO ESTÁ FUNCIONANDO
+            cuentaRepository.actualizarEstadoCuenta(idCuenta, cuenta.getEstadoCuenta());
+            cuentaRepository.actualizarTipoCuenta(idCuenta, cuenta.getTipoCuenta());
             
             return "redirect:/";}
 
     }
-    /* 
-    @GetMapping("/cuenta/filtrarCuentasPorTipo")
-    public String filtroCuentasPorTipo(@RequestParam("tipoCuenta") String tipoCuenta, Model model) {
-        if (idCliente != null) {
-            if (tipoCuenta.equals("Todos")){
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentaPorId_cliente(idCliente);
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            } else {
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentaPorTipoCuentaYCliente(tipoCuenta, idCliente);
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            }
-        }
-        else if (idOficina != null) {
-            if (tipoCuenta.equals("Todos")){
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentasPorOficina(idOficina);
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            } else {
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentaPorTipoCuentaYOficina(tipoCuenta, idOficina);
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            }
-        }
-        else if (idCliente == null && idOficina == null) {
-            if (tipoCuenta.equals("Todos")){
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentas();
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            } else {
-                Collection<Cuenta> cuentas = cuentaRepository.darCuentaPorTipoCuenta(tipoCuenta);
-                model.addAttribute("cuenta", cuentas);
-                return "cuenta";
-            }
-        }
-        else {
-            return "redirect:/";
-        }
+
+
+    @GetMapping("/cuenta/operaciones/{numeroCuenta}")
+    public String operacionesCuenta(@PathVariable("numeroCuenta") String numeroCuenta, Model model) {
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+        List<OperacionBancariaCuenta> operaciones = cuenta.getOperacionesBancarias();
+        model.addAttribute("cuenta", cuenta);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("operacionBancariaCuenta", operaciones);
+        return "operacionBancariaCuenta";
     }
 
-    @GetMapping("/cuenta/filtrarCuentasPorSaldo")
-    public String filtroCuentasPorSaldo(@RequestParam("minSaldo") Double minSaldo, 
-                                     @RequestParam("maxSaldo") Double maxSaldo, 
-                                     Model model) {
-    if (idCliente != null) {
-        Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorRangoSaldoYCliente(minSaldo, maxSaldo, idCliente);
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
+    @GetMapping("/cuenta/operaciones/consignar/{numeroCuenta}")
+    public String consignarForm(@PathVariable("numeroCuenta") String numeroCuenta, Model model) {
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        model.addAttribute("cuenta", cuenta);
+        return "operacionConsignar";
     }
-    else if (idOficina != null) {
-        Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorRangoSaldoYOficina(minSaldo, maxSaldo, idOficina);
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
+
+    @PostMapping("/cuenta/operaciones/consignar/{numeroCuenta}/save")
+    public String consignarGuardar(@PathVariable("numeroCuenta") String numeroCuenta, @ModelAttribute("valor") Double valor, 
+            @ModelAttribute("fecha") String fecha, @ModelAttribute("hora") String hora, Model model) throws ParseException {
+        
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        if (cuenta.getEstadoCuenta().equals("Activa")) {
+            cuenta.setSaldo(cuenta.getSaldo() + valor);
+            cuentaRepository.actualizarSaldo(cuenta.getId(), cuenta.getSaldo());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            Date fechaDate = dateFormat.parse(fecha);
+            OperacionBancariaCuenta opConsignacion = new OperacionBancariaCuenta(fechaDate, hora, "Consignar", valor, null, cuenta.getSaldo());
+            cuenta.getOperacionesBancarias().add(opConsignacion);
+            cuentaRepository.save(cuenta);
+            return "redirect:/cuenta/operaciones/" + numeroCuenta;
+        } else
+            model.addAttribute("errorMessage", "Cuenta desactivada no se puede consignar");
+            return "error";
     }
-    else if (idCliente == null && idOficina == null) {
-        Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorRangoSaldo(minSaldo, maxSaldo);
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
+
+    @GetMapping("/cuenta/operaciones/retirar/{numeroCuenta}")
+    public String retirarForm(@PathVariable("numeroCuenta") String numeroCuenta, Model model) {
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        model.addAttribute("cuenta", cuenta);
+        return "operacionRetirar";
     }
-    else {
-        return "redirect:/";
+
+    @PostMapping("/cuenta/operaciones/retirar/{numeroCuenta}/save")
+    public String retirarGuardar(@PathVariable("numeroCuenta") String numeroCuenta, @ModelAttribute("valor") Double valor, 
+            @ModelAttribute("fecha") String fecha, @ModelAttribute("hora") String hora, Model model) throws ParseException {
+        
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        if (cuenta.getEstadoCuenta().equals("Activa")) {
+            if (cuenta.getSaldo() >= valor) {
+                cuenta.setSaldo(cuenta.getSaldo() - valor);
+                cuentaRepository.actualizarSaldo(cuenta.getId(), cuenta.getSaldo());
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                Date fechaDate = dateFormat.parse(fecha);
+                OperacionBancariaCuenta opConsignacion = new OperacionBancariaCuenta(fechaDate, hora, "Retirar", valor, null, cuenta.getSaldo());
+                cuenta.getOperacionesBancarias().add(opConsignacion);
+                cuentaRepository.save(cuenta);
+                return "redirect:/cuenta/operaciones/" + numeroCuenta;
+            } else
+                model.addAttribute("errorMessage", "Saldo insuficiente para realizar la transacción");
+                return "error";
+        } else
+            model.addAttribute("errorMessage", "Cuenta desactivada no se puede consignar");
+            return "error";
     }
+
+    @GetMapping("/cuenta/operaciones/transferir/{numeroCuenta}")
+    public String transferirForm(@PathVariable("numeroCuenta") String numeroCuenta, Model model) {
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        model.addAttribute("cuenta", cuenta);
+        return "operacionTransferir";
+    }
+
+    @PostMapping("/cuenta/operaciones/transferir/{numeroCuenta}/save")
+    public String transferirGuardar(@PathVariable("numeroCuenta") String numeroCuenta, @ModelAttribute("valor") Double valor, 
+            @ModelAttribute("numeroCuentaDestino") String numeroCuentaDestino, @ModelAttribute("fecha") String fecha, 
+            @ModelAttribute("hora") String hora, Model model) throws ParseException {
+        
+        Cuenta cuenta = cuentaRepository.buscarPorNumeroCuenta(numeroCuenta);
+        Cuenta cuentaDestino = cuentaRepository.buscarPorNumeroCuenta(numeroCuentaDestino);
+        if (cuenta.getEstadoCuenta().equals("Activa") && cuentaDestino.getEstadoCuenta().equals("Activa")) {
+            if (cuenta.getSaldo() >= valor) {
+                cuenta.setSaldo(cuenta.getSaldo() - valor);
+                cuentaDestino.setSaldo(cuentaDestino.getSaldo() + valor);
+                cuentaRepository.actualizarSaldo(cuenta.getId(), cuenta.getSaldo());
+                cuentaRepository.actualizarSaldo(cuentaDestino.getId(), cuentaDestino.getSaldo());
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                Date fechaDate = dateFormat.parse(fecha);
+                OperacionBancariaCuenta opConsignacion = new OperacionBancariaCuenta(fechaDate, hora, "Transferir", valor, cuentaDestino.getNumeroCuenta(), cuenta.getSaldo());
+                cuenta.getOperacionesBancarias().add(opConsignacion);
+                cuentaRepository.save(cuenta);
+                /*OperacionBancariaCuenta opConsignacionDestino = new OperacionBancariaCuenta(fechaDate, hora, "Transferencia recibida", valor, cuenta.getNumeroCuenta(), cuentaDestino.getSaldo());
+                cuentaDestino.getOperacionesBancarias().add(opConsignacionDestino);
+                cuentaRepository.save(cuentaDestino);*/
+                return "redirect:/cuenta/operaciones/" + numeroCuenta;
+            } else
+                model.addAttribute("errorMessage", "Saldo insuficiente para realizar la transacción");
+                return "error";
+        } else
+            model.addAttribute("errorMessage", "Cuenta desactivada no se puede consignar");
+            return "error";
+    }
+
+
+    public String generarNumeroCuenta() {
+        Random rand = new Random();
+        int digitos = 10;
+        long limiteInferior = (long) Math.pow(10, digitos - 1);
+        long limiteSuperior = (long) Math.pow(10, digitos) - 1;
+        long numeroCuenta = limiteInferior + ((long) (rand.nextDouble() * (limiteSuperior - limiteInferior)));
+        return String.valueOf(numeroCuenta);
 }
-
-    @GetMapping("/cuenta/filtrarCuentasPorFechaCreacion")
-    public String filtroCuentasPorFechaCreacion(@RequestParam("fechaInicio") Date fechaInicio, 
-                                                @RequestParam("fechaFin") Date fechaFin, 
-                                                Model model) {
-        if (idCliente != null){
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaCreacionYCliente(fechaInicio, fechaFin, idCliente);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else if (idOficina != null){
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaCreacionYOficina(fechaInicio, fechaFin, idOficina);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else if (idCliente == null && idOficina == null) {
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaCreacion(fechaInicio, fechaFin);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping("/cuenta/filtrarCuentasPorFechaUltTrans")
-    public String filtroCuentasPorFechaUltTrans(@RequestParam("fechaInicio") Date fechaInicio, 
-                                                @RequestParam("fechaFin") Date fechaFin, 
-                                                Model model) {
-        if(idCliente != null){
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaUltTransYCliente(fechaInicio, fechaFin, idCliente);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else if (idOficina != null){
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaUltTransYOficina(fechaInicio, fechaFin, idOficina);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else if (idCliente == null && idOficina == null) {
-            Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorFechaUltTrans(fechaInicio, fechaFin);
-            model.addAttribute("cuenta", cuentasFiltradas);
-            return "cuenta";
-        }
-        else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping("/cuenta/filtrarCuentasPorNumDocCliente")
-    public String filtroCuentasPorFechaUltTrans(@RequestParam("numeroDocumento") String numeroDocumento, 
-                                                Model model) {
-        Collection<Cuenta> cuentasFiltradas = cuentaRepository.darCuentasPorNumeroDocumentCliente(numeroDocumento.trim());
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
-    }
-
-    @GetMapping("/cuenta/{numeroCuenta}/delete")
-    public String cuentaEliminar(@PathVariable("numeroCuenta") String numeroCuenta) {
-        cuentaRepository.eliminarCuenta(numeroCuenta);
-        return "redirect:/cuenta";
-    }*/
     
 }

@@ -80,7 +80,7 @@
                     <td th:text="${cuenta.saldo}"></td>
                     <td th:text="${cuenta.fechaCreacion}"></td>
                     <td>
-                        <a>
+                        <a th:href="@{/cuenta/operaciones/{numeroCuenta}(numeroCuenta=${cuenta.numeroCuenta})}">
                             Ver Operaciones
                         </a>
                     </td>
@@ -88,13 +88,13 @@
                         <a th:href="@{/cuenta/{numeroCuenta}/edit(numeroCuenta=${cuenta.numeroCuenta})}">
                             Editar
                         </a>
-                        <a>
+                        <a th:href="@{/cuenta/operaciones/consignar/{numeroCuenta}(numeroCuenta=${cuenta.numeroCuenta})}">
                             Consignar
                         </a>
-                        <a>
+                        <a th:href="@{/cuenta/operaciones/retirar/{numeroCuenta}(numeroCuenta=${cuenta.numeroCuenta})}">
                             Retirar
                         </a>
-                        <a>
+                        <a th:href="@{/cuenta/operaciones/transferir/{numeroCuenta}(numeroCuenta=${cuenta.numeroCuenta})}">
                             Transferir
                         </a>
                     </td>

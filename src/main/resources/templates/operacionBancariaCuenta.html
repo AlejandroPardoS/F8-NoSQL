@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operacion Bancaria de Cuentas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <h1>Lista de operaciones bancarias sobre cuentas</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Numero de Cuenta</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Tipo de Documento</th>
+                    <th>Numero de Documento</th>
+                    <th>Fecha de Operacion</th>
+                    <th>Hora de Operacion</th>
+                    <th>Tipo de Operacion</th>
+                    <th>Valor *</th>
+                    <th>Numero de Cuenta de Destino *</th>
+                    <th>Saldo Resultante</th>
+                </tr>
+            </thead>
+            <th:block th:each="operacionBancariaCuenta:${operacionBancariaCuenta}">
+                <tr>
+                    <td th:text="${cuenta.numeroCuenta}"></td>
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.tipoDocumento}"></td>
+                    <td th:text="${usuario.numeroDocumento}"></td>
+                    <td th:text="${operacionBancariaCuenta.fecha}"></td>
+                    <td th:text="${operacionBancariaCuenta.hora}"></td>
+                    <td th:text="${operacionBancariaCuenta.tipoOperacion}"></td>
+                    <td>
+                        <span th:if="${operacionBancariaCuenta.valor != null}" th:text="${operacionBancariaCuenta.valor}"></span>
+                        <span th:if="${operacionBancariaCuenta.valor == null}">Esta operacion no tiene valor (Cierre)</span>
+                    </td>
+                    <td>
+                        <span th:if="${operacionBancariaCuenta.numeroCuentaDestino != null}" th:text="${operacionBancariaCuenta.numeroCuentaDestino}"></span>
+                        <span th:if="${operacionBancariaCuenta.numeroCuentaDestino == null}">Esta operacion no necesita cuenta de destino</span>
+                    </td>
+                    <td th:text="${operacionBancariaCuenta.saldoResultante}"></td>
+                </tr>
+            </th:block>
+        </table>
+        <div>
+            <a th:href="@{/}" class="btn btn-primary"> Volver Atrás</a>
+
+        </div>
+    </div>
+    
+</body>
+</html>
