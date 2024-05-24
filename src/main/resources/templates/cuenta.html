@@ -10,7 +10,7 @@
     <div>
         <h1>Lista de cuentas</h1>
 
-        <!--<form th:action="@{/cuenta/filtrarCuentasPorTipo}" method="get">
+        <form th:action="@{/cuenta/filtrarCuentasPorTipo}" method="get">
             <label for="tipoCuenta">Seleccionar Tipo de Cuenta a filtrar:</label>
             <select name="tipoCuenta" id="tipoCuenta">
                 <option value="Todos">Todos</option>
@@ -36,20 +36,12 @@
             <input type="date" name="fechaFin" id="fechaFin">
             <button type="submit">Filtrar</button>
         </form>
-
-        <form th:action="@{/cuenta/filtrarCuentasPorFechaUltTrans}" method="get">
-            <label for="fechaInicio">Fecha de Ultima Transaccion de Inicio:</label>
-            <input type="date" name="fechaInicio" id="fechaInicio">
-            <label for="fechaFin">Fecha de Ultima Transaccion de Fin:</label>
-            <input type="date" name="fechaFin" id="fechaFin">
-            <button type="submit">Filtrar</button>
-        </form>
         
         <form th:action="@{/cuenta/filtrarCuentasPorNumDocCliente}" method="get">
             <label for="numeroDocumento">Numero de Documento del cliente:</label>
             <input type="text" name="numeroDocumento" id="numeroDocumento">
             <button type="submit">Filtrar</button>
-        </form>-->
+        </form>
         
 
         <table class="table table-hover table-bordered">

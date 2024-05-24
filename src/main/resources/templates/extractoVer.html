@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <h1>Extracto Bancario</h1>
+        <div>
+            <label for="mes_anio">Extracto del año y mes:</label>
+            <input type="text" name="mes_anio" id="mes_anio" th:value="${mes_anio}" readonly>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Numero de Cuenta</th>
+                    <th>Tipo Operacion</th>
+                    <th>Valor</th>
+                    <th>Fecha Operacion</th>
+                    <th>Hora Operacion</th>
+                    <th>Numero de Cuenta de Destino</th>
+                </tr>
+            </thead>
+            <th:block th:each="operacionBancariaCuenta:${operacionBancariaCuenta}" >
+                <tr>
+                    <td th:text="${cuenta.numeroCuenta}"></td>
+                    <td th:text="${operacionBancariaCuenta.tipoOperacion}"></td>
+                    <td th:text="${operacionBancariaCuenta.valor}"></td>
+                    <td th:text="${operacionBancariaCuenta.fecha}"></td>
+                    <td th:text="${operacionBancariaCuenta.hora}"></td>
+                    <td>
+                        <span th:if="${operacionBancariaCuenta.numeroCuentaDestino != null}" th:text="${operacionBancariaCuenta.numeroCuentaDestino}"></span>
+                        <span th:if="${operacionBancariaCuenta.numeroCuentaDestino == null}">Esta operacion no necesita cuenta de destino</span>
+                    </td>
+                    
+
+                </tr>
+            </th:block>
+        </table>
+        <div>
+            <label for="saldoInicial">Saldo antes de empezar el Mes:</label>
+            <input type="text" name="saldoInicial" id="saldoInicial" th:value="${saldoInicial}" readonly>
+            <label for="saldoFinal">Saldo al Final del Mes:</label>
+            <input type="text" name="saldoFinal" id="saldoFinal" th:value=${saldoFinal} readonly>
+            
+        </div>
+        <div>
+            <a th:href="@{/}" class="btn btn-primary"> Volver Atrás</a>
+        </div>
+    </div>
+</body>
+</html>
