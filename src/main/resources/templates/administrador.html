@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cliente</title>
+    <title>Administrador</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
         body {
@@ -42,34 +42,75 @@
         .btn-custom:hover {
             background-color: #0056b3;
         }
+        .img-container {
+            text-align: center;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
         .row {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container">
         <div class="card">
             <div class="card-header text-center">
-                <h1>Hola <span th:text="${cliente.nombre}"></span>! Bienvenido a BancAndes</h1>
+                <h1>Hola Administrador de BancAndes</h1>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <a th:href="@{cuenta/{id_cliente}(id_cliente=${cliente.id})}" class="btn btn-custom">
-                            Ver mis Cuentas y hacer Operaciones
-                        </a>
+                        <a th:href="@{usuario/new}" class="btn btn-custom">Crear Cliente</a>
                     </div>
+                    <div class="col-md-6">
+                        <a th:href="@{/usuario}" class="btn btn-custom">Ver Usuarios</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{empleado/new}" class="btn btn-custom">Crear Empleado</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a th:href="@{/empleado}" class="btn btn-custom">Ver Empleados</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{puntoDeAtencion}" class="btn btn-custom">Ver Puntos de Atención</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a th:href="@{puntoDeAtencion/new}" class="btn btn-custom">Crear Punto de Atención</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{oficina}" class="btn btn-custom">Ver Oficinas</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a th:href="@{oficina/new}" class="btn btn-custom">Crear Oficina</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{cuenta}" class="btn btn-custom">Ver Cuentas</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a th:href="@{cuenta/new}" class="btn btn-custom">Crear Cuenta</a>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
                     <div class="col-md-6">
                         <a th:href="@{/operacionBancariaCuenta/extractoBancario/sol}" class="btn btn-custom">
                             Crear Extracto Bancario
                         </a>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <a th:href="@{/}" class="btn btn-custom">Volver Atrás</a>
-                    </div>
+                <div class="btn-container">
+                    <a th:href="@{/}" class="btn btn-primary btn-custom">Volver Atrás</a>
                 </div>
             </div>
         </div>

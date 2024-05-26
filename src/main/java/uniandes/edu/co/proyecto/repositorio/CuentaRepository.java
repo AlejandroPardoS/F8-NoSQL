@@ -33,14 +33,23 @@ public interface CuentaRepository extends MongoRepository<Cuenta, ObjectId> {
     @Query("{tipoCuenta: ?0}")
     List<Cuenta> buscarPorTipoCuenta(String tipoCuenta);
 
+    @Query("{tipoCuenta: ?0, id_usuario: ?1}")
+    List<Cuenta> buscarPorTipoCuentaYUsuario(String tipoCuenta, ObjectId idUsuario);
+
     @Query("{saldo: { $gte: ?0, $lte: ?1 }}")
     List<Cuenta> buscarPorRangoSaldo(Double saldoMin, Double saldoMax);
+
+    @Query("{saldo: { $gte: ?0, $lte: ?1 }, id_usuario: ?2 }")
+    List<Cuenta> buscarPorRangoSaldoYUsuario(Double saldoMin, Double saldoMax, ObjectId idUsuario);
 
     @Query("{id_usuario: ?0}")
     List<Cuenta> buscarPorIdUsuario(ObjectId idUsuario);
 
     @Query("{fechaCreacion: { $gte: ?0, $lte: ?1 }}")
     List<Cuenta> buscarPorRangoFecha(Date fechaInicio, Date fechaFin);
+
+    @Query("{fechaCreacion: { $gte: ?0, $lte: ?1 }, id_usuario: ?2}")
+    List<Cuenta> buscarPorRangoFechaYUsuario(Date fechaInicio, Date fechaFin, ObjectId idUsuario);
 
     @Aggregation(pipeline = {
         "{ $match: { 'numeroCuenta': ?0 } }, " + 

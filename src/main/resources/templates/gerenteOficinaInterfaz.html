@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cliente</title>
+    <title>Gerente Oficina</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
         body {
@@ -51,22 +51,20 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header text-center">
-                <h1>Hola <span th:text="${cliente.nombre}"></span>! Bienvenido a BancAndes</h1>
-            </div>
+                <h1 class="text-center">Hola <span th:text="${gerenteOficina.usuario.nombre}"></span>, Gerente de Oficina</h1>            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <a th:href="@{cuenta/{id_cliente}(id_cliente=${cliente.id})}" class="btn btn-custom">
-                            Ver mis Cuentas y hacer Operaciones
-                        </a>
+                        <a th:href="@{usuario/new}" class="btn btn-custom">Crear Cliente</a>
                     </div>
                     <div class="col-md-6">
-                        <a th:href="@{/operacionBancariaCuenta/extractoBancario/sol}" class="btn btn-custom">
-                            Crear Extracto Bancario
-                        </a>
+                        <a th:href="@{cuenta/new}" class="btn btn-custom">Crear Cuenta</a>
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{/cuenta}" class="btn btn-custom">Ver Cuentas</a>
+                    </div>
                     <div class="col-md-6">
                         <a th:href="@{/}" class="btn btn-custom">Volver Atrás</a>
                     </div>
@@ -78,5 +76,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poTvnwB2rQpqiVr7x0lZnigpMCQy/Ew1u+9TVsrDys9uf4LLk4x" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWld/xp2a1ai6+9675i/xH3swBFTBIzJHhHtmJ1zN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-oS3vJWv+0UjzBfKQ1XDxPgY+h09P+65K7aykH7f6T/MtEULaR1jVriSwPrkxLY+" crossorigin="anonymous"></script>
+
 </body>
 </html>

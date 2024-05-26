@@ -44,27 +44,23 @@ public class CuentaController {
         return "cuenta";
     }
 
-    /*@GetMapping("/cuenta/oficina/{idOficina}")
-    public String cuentasPorOficina(@PathVariable("idOficina") Integer idOficina, @RequestParam(value = "gerenteOficina", required = false) Integer gerenteOficina, Model model) {
-    model.addAttribute("cuenta", cuentaRepository.darCuentasPorOficina(idOficina));
-    this.idOficina = idOficina;
-    if (gerenteOficina != null) {
-        model.addAttribute("esGerenteOficina", true);
+    private ObjectId idClienteActual;
+
+    public void setIdClienteNull() {
+        this.idClienteActual = null;
     }
-    return "cuenta";
-}
 
     @GetMapping("/cuenta/{id_cliente}")
-    public String cuentasPorCliente(@ModelAttribute("id_cliente") Integer id_cliente, Model model) {
-        Collection<Cuenta> cuenta = cuentaRepository.darCuentaPorId_cliente(id_cliente);
-        if (!cuenta.isEmpty()) {
-                model.addAttribute("cuenta", cuenta);
-                this.idCliente = id_cliente;
-            return "cuenta";
-        } else {
-            return "redirect:/";
+    public String cuentasPorCliente(@ModelAttribute("id_cliente") ObjectId id_cliente, Model model) {
+        List<Cuenta> cuentas = cuentaRepository.buscarPorIdUsuario(id_cliente);
+        this.idClienteActual = id_cliente;
+        for (Cuenta cuenta : cuentas) {
+            Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+            cuenta.setUsuario(usuario);
         }
-    }*/
+        model.addAttribute("cuenta", cuentas);
+        return "cuenta";
+    }
 
     @GetMapping("/cuenta/new")
     public String cuentaForm(Model model) {
@@ -120,7 +116,7 @@ public class CuentaController {
         ObjectId idCuenta = cuenta2.getId();
         if (cuenta.getEstadoCuenta().equals("Cerrada")){
             if (cuenta.getSaldo() == 0){
-                cuentaRepository.actualizarEstadoCuenta(idCuenta, cuenta.getEstadoCuenta()); //RARO
+                cuentaRepository.actualizarEstadoCuenta(idCuenta, "Cerrada"); //RARO
                 cuentaRepository.actualizarTipoCuenta(idCuenta, cuenta.getTipoCuenta());
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -258,22 +254,42 @@ public class CuentaController {
 
     @GetMapping("/cuenta/filtrarCuentasPorTipo")
     public String filtroCuentasPorTipo(@RequestParam("tipoCuenta") String tipoCuenta, Model model) {
-        if (tipoCuenta.equals("Todos")){
-            List<Cuenta> cuentas = cuentaRepository.findAll();
-            for (Cuenta cuenta : cuentas) {
-                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
-                cuenta.setUsuario(usuario);
+        if (idClienteActual != null) {
+            if (tipoCuenta.equals("Todos")){
+                List<Cuenta> cuentas = cuentaRepository.buscarPorIdUsuario(idClienteActual);
+                for (Cuenta cuenta : cuentas) {
+                    Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                    cuenta.setUsuario(usuario);
+                }
+                model.addAttribute("cuenta", cuentas);
+                return "cuenta";
+            } else {
+                List<Cuenta> cuentas = cuentaRepository.buscarPorTipoCuentaYUsuario(tipoCuenta, idClienteActual);
+                for (Cuenta cuenta : cuentas) {
+                    Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                    cuenta.setUsuario(usuario);
+                }
+                model.addAttribute("cuenta", cuentas);
+                return "cuenta";
             }
-            model.addAttribute("cuenta", cuentas);
-            return "cuenta";
         } else {
-            List<Cuenta> cuentas = cuentaRepository.buscarPorTipoCuenta(tipoCuenta);
-            for (Cuenta cuenta : cuentas) {
-                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
-                cuenta.setUsuario(usuario);
+            if (tipoCuenta.equals("Todos")){
+                List<Cuenta> cuentas = cuentaRepository.findAll();
+                for (Cuenta cuenta : cuentas) {
+                    Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                    cuenta.setUsuario(usuario);
+                }
+                model.addAttribute("cuenta", cuentas);
+                return "cuenta";
+            } else {
+                List<Cuenta> cuentas = cuentaRepository.buscarPorTipoCuenta(tipoCuenta);
+                for (Cuenta cuenta : cuentas) {
+                    Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                    cuenta.setUsuario(usuario);
+                }
+                model.addAttribute("cuenta", cuentas);
+                return "cuenta";
             }
-            model.addAttribute("cuenta", cuentas);
-            return "cuenta";
         }
     }
 
@@ -281,8 +297,21 @@ public class CuentaController {
     public String filtroCuentasPorSaldo(@RequestParam("minSaldo") Double minSaldo, 
                 @RequestParam("maxSaldo") Double maxSaldo, Model model) {
 
-        List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoSaldo(minSaldo, maxSaldo);
-        model.addAttribute("cuenta", cuentasFiltradas);
+        if (idClienteActual != null) {
+            List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoSaldoYUsuario(minSaldo, maxSaldo, idClienteActual);
+            for (Cuenta cuenta : cuentasFiltradas) {
+                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                cuenta.setUsuario(usuario);
+            }
+            model.addAttribute("cuenta", cuentasFiltradas);
+        } else {
+            List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoSaldo(minSaldo, maxSaldo);
+            for (Cuenta cuenta : cuentasFiltradas) {
+                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                cuenta.setUsuario(usuario);
+            }
+            model.addAttribute("cuenta", cuentasFiltradas);
+        }
         return "cuenta";
     
     }
@@ -290,12 +319,18 @@ public class CuentaController {
     @GetMapping("/cuenta/filtrarCuentasPorNumDocCliente")
     public String filtroCuentasPorCliente(@RequestParam("numeroDocumento") String numeroDocumento, Model model) {
         Usuario usuario = usuarioRepository.buscarPorNumDoc(numeroDocumento);
-        List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorIdUsuario(usuario.getId());
-        for (Cuenta cuenta : cuentasFiltradas) {
-            cuenta.setUsuario(usuario);
+        if (usuario == null) {
+            model.addAttribute("errorMessage", "Usuario no encontrado");
+            return "error";
         }
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
+        else {
+            List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorIdUsuario(usuario.getId());
+            for (Cuenta cuenta : cuentasFiltradas) {
+                cuenta.setUsuario(usuario);
+            }
+            model.addAttribute("cuenta", cuentasFiltradas);
+            return "cuenta";
+        }
     }
 
     @GetMapping("/cuenta/filtrarCuentasPorFechaCreacion")
@@ -334,13 +369,23 @@ public class CuentaController {
         Date formattedDateInicio = desiredFormat.parse(formattedDateInicioStr);
         Date formattedDateFin = desiredFormat.parse(formattedDateFinStr);
                         
-        List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoFecha(formattedDateInicio, formattedDateFin);
-        for (Cuenta cuenta : cuentasFiltradas) {
-            Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
-            cuenta.setUsuario(usuario);
+        if (idClienteActual != null){
+            List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoFechaYUsuario(formattedDateInicio, formattedDateFin, idClienteActual);
+            for (Cuenta cuenta : cuentasFiltradas) {
+                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                cuenta.setUsuario(usuario);
+            }
+            model.addAttribute("cuenta", cuentasFiltradas);
+            return "cuenta";
+        } else {
+            List<Cuenta> cuentasFiltradas = cuentaRepository.buscarPorRangoFecha(formattedDateInicio, formattedDateFin);
+            for (Cuenta cuenta : cuentasFiltradas) {
+                Usuario usuario = usuarioRepository.buscarPorId(cuenta.getId_usuario());
+                cuenta.setUsuario(usuario);
+            }
+            model.addAttribute("cuenta", cuentasFiltradas);
+            return "cuenta";
         }
-        model.addAttribute("cuenta", cuentasFiltradas);
-        return "cuenta";
     }
 
     @GetMapping("/operacionBancariaCuenta/extractoBancario/sol")

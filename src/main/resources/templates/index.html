@@ -6,10 +6,20 @@
     <title>BancAndes</title>
     <!-- Enlace al archivo CSS de Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mx-auto w-75 mt-5">
-        <h1 class="text-center">BancAndes</h1>
+    <div class="container mx-auto w-50 mt-0">
+        <div class="card-header text-center">
+            <h1 class="text-center">¡Bienvenido a BancAndes!</h1>
+        </div>
         <img src="https://media.licdn.com/dms/image/C4E1BAQG_j4_1iuvjsg/company-background_10000/0/1648818638643/caja_los_andes___banco_rural_lder_del_per_cover?e=2147483647&v=beta&t=qkFBoPN1LcZsa3__f2z2mIFK6IMkPsCfIoRYV6xUr_I" alt="Logo BancAndes" class="img-fluid d-block mx-auto my-4" style="max-width: 450px;">
 
         <!-- Formulario de inicio de sesión -->
@@ -35,43 +45,6 @@
                 <label th:text="${errorMessage}"></label>
             </div>
             <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-            
-            
-            <div class="btn-container">
-                <a th:href="@{usuario/new}" class="btn btn-primary btn-custom">Crear Cliente</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{/usuario}" class="btn btn-primary btn-custom">Ver Usuarios</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{empleado/new}" class="btn btn-primary btn-custom">Crear Empleado</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{/empleado}" class="btn btn-primary btn-custom">Ver Empleados</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{puntoDeAtencion}" class="btn btn-primary btn-custom">Ver Puntos de Atencion</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{puntoDeAtencion/new}" class="btn btn-primary btn-custom">Crear Punto de Atencion</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{oficina}" class="btn btn-primary btn-custom">Ver Oficinas</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{oficina/new}" class="btn btn-primary btn-custom">Crear Oficina</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{cuenta}" class="btn btn-primary btn-custom">Ver Cuentas</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{cuenta/new}" class="btn btn-primary btn-custom">Crear Cuenta</a>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{/operacionBancariaCuenta/extractoBancario/sol}" class="btn btn-primary btn-custom">
-                    Crear Extracto Bancario
-                </a>
-            </div>
         </form>
     </div>
 </body>
